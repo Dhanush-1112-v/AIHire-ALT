@@ -6,3 +6,15 @@ sqlalchemy
 psycopg2-binary
 python-dotenv
 pypdf
+numpy
+pandas
+scikit-learn
+sentence-transformers
+transformers
+torch
+openai-whisper
+librosa
+soundfile
+langchain
+langchain-openai
+openai

@@ -1,0 +1,17 @@
+.git
+.github
+.gitignore
+
+frontend/node_modules
+frontend/dist
+
+backend/.env
+backend/__pycache__
+**/__pycache__
+*.pyc
+
+datasets
+common_voice_en_803.*
+
+venv
+.venv
