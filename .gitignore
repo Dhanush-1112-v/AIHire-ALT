@@ -1,0 +1,14 @@
+backend/.env
+frontend/node_modules/
+backend/__pycache__/
+**/__pycache__/
+*.pyc
+.env
+node_modules/
+dist/
+.venv/
+venv/
+
+common_voice_en_803.*
+
+datasets/
