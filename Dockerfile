@@ -26,8 +26,6 @@ COPY backend /app/backend
 
 WORKDIR /app
 
-ENV PORT=10000
-
 EXPOSE 10000
 
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port ${PORT} --app-dir /app/backend"]
+CMD ["sh", "-c", "echo '=== Starting AIHire Backend ==='; python -c \"import sys; sys.path.insert(0, '/app/backend'); import app.main; print('=== AIHire app import successful ===')\"; exec python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-10000} --app-dir /app/backend --log-level info"]
