@@ -1,22 +1,18 @@
 from typing import Dict
 import re
 
-from sentence_transformers import SentenceTransformer, util
+_MODEL = None
 
 
-# ==========================================================
-# AIHire-AMCI
-# Semantic Interview Answer Evaluation
-# ==========================================================
+def get_sentence_model():
+    global _MODEL
 
-# Load the Sentence Transformer model.
-# The model is downloaded automatically the first time.
-model = SentenceTransformer("all-MiniLM-L6-v2")
+    if _MODEL is None:
+        from sentence_transformers import SentenceTransformer
+        _MODEL = SentenceTransformer("all-MiniLM-L6-v2")
 
+    return _MODEL
 
-# ==========================================================
-# REFERENCE ANSWERS
-# ==========================================================
 
 REFERENCE_ANSWERS = {
     "Python": """
@@ -52,12 +48,7 @@ REFERENCE_ANSWERS = {
 }
 
 
-# ==========================================================
-# IMPORTANT TECHNICAL CONCEPTS
-# ==========================================================
-
 TECHNICAL_CONCEPTS = {
-
     "Python": [
         "list",
         "tuple",
@@ -94,15 +85,7 @@ TECHNICAL_CONCEPTS = {
 }
 
 
-# ==========================================================
-# TEXT CLEANING
-# ==========================================================
-
 def clean_text(text: str) -> str:
-    """
-    Basic text normalization.
-    """
-
     text = text.lower()
 
     text = re.sub(
@@ -119,10 +102,6 @@ def clean_text(text: str) -> str:
 
     return text.strip()
 
-
-# ==========================================================
-# CONCEPT COVERAGE
-# ==========================================================
 
 def calculate_concept_score(
     answer: str,
@@ -142,7 +121,6 @@ def calculate_concept_score(
     matched = 0
 
     for concept in concepts:
-
         concept_clean = clean_text(concept)
 
         if concept_clean in answer_clean:
@@ -155,10 +133,6 @@ def calculate_concept_score(
     return round(score, 2)
 
 
-# ==========================================================
-# EVIDENCE QUALITY
-# ==========================================================
-
 def calculate_evidence_score(
     answer: str
 ) -> float:
@@ -168,10 +142,6 @@ def calculate_evidence_score(
     word_count = len(words)
 
     score = 0
-
-    # ------------------------------------------
-    # Explanation length
-    # ------------------------------------------
 
     if word_count >= 50:
         score += 40
@@ -184,10 +154,6 @@ def calculate_evidence_score(
 
     else:
         score += 5
-
-    # ------------------------------------------
-    # Technical explanation indicators
-    # ------------------------------------------
 
     technical_indicators = [
         "because",
@@ -215,10 +181,6 @@ def calculate_evidence_score(
         35
     )
 
-    # ------------------------------------------
-    # Sentence structure
-    # ------------------------------------------
-
     sentence_count = len(
         re.findall(
             r"[.!?]",
@@ -241,20 +203,14 @@ def calculate_evidence_score(
     )
 
 
-# ==========================================================
-# SEMANTIC SIMILARITY
-# ==========================================================
-
 def calculate_semantic_similarity(
     answer: str,
     reference_answer: str
 ) -> float:
 
-    """
-    Uses Sentence Transformer embeddings and
-    cosine similarity to compare the candidate
-    answer with the expected technical answer.
-    """
+    from sentence_transformers import util
+
+    model = get_sentence_model()
 
     answer_embedding = model.encode(
         answer,
@@ -271,7 +227,6 @@ def calculate_semantic_similarity(
         reference_embedding
     ).item()
 
-    # Convert [-1, 1] similarity into [0, 100]
     similarity_score = (
         (similarity + 1) / 2
     ) * 100
@@ -282,10 +237,6 @@ def calculate_semantic_similarity(
     )
 
 
-# ==========================================================
-# MAIN AI EVALUATION
-# ==========================================================
-
 def evaluate_interview_answer(
     question: str,
     skill: str,
@@ -295,12 +246,7 @@ def evaluate_interview_answer(
 
     answer = answer.strip()
 
-    # ======================================================
-    # EMPTY ANSWER
-    # ======================================================
-
     if not answer:
-
         return {
             "score": 0,
             "relevance": "Low",
@@ -312,65 +258,32 @@ def evaluate_interview_answer(
             "model": "AIHire-AMCI-SentenceTransformer"
         }
 
-    # ======================================================
-    # GET REFERENCE ANSWER
-    # ======================================================
-
     reference_answer = REFERENCE_ANSWERS.get(
         skill
     )
 
-    # If the skill doesn't have a reference answer,
-    # use the question itself as semantic context.
     if not reference_answer:
-
         reference_answer = question
-
-    # ======================================================
-    # AI / ML SEMANTIC SCORE
-    # ======================================================
 
     semantic_score = calculate_semantic_similarity(
         answer,
         reference_answer
     )
 
-    # ======================================================
-    # TECHNICAL CONCEPT SCORE
-    # ======================================================
-
     concept_score = calculate_concept_score(
         answer,
         skill
     )
 
-    # ======================================================
-    # EVIDENCE SCORE
-    # ======================================================
-
     evidence_score = calculate_evidence_score(
         answer
     )
-
-    # ======================================================
-    # AIHire-AMCI SCORE FUSION
-    # ======================================================
-
-    # Semantic understanding gets the highest weight.
-    #
-    # 60% = Sentence Transformer semantic similarity
-    # 25% = technical concept coverage
-    # 15% = explanation/evidence quality
 
     final_score = (
         semantic_score * 0.60
         + concept_score * 0.25
         + evidence_score * 0.15
     )
-
-    # ======================================================
-    # DIFFICULTY ADJUSTMENT
-    # ======================================================
 
     difficulty_bonus = {
         "Easy": 0,
@@ -388,10 +301,6 @@ def evaluate_interview_answer(
         100
     )
 
-    # ======================================================
-    # RELEVANCE
-    # ======================================================
-
     if semantic_score >= 75:
         relevance = "High"
 
@@ -400,10 +309,6 @@ def evaluate_interview_answer(
 
     else:
         relevance = "Low"
-
-    # ======================================================
-    # TECHNICAL UNDERSTANDING
-    # ======================================================
 
     if final_score >= 80:
         technical = "Strong"
@@ -417,10 +322,6 @@ def evaluate_interview_answer(
     else:
         technical = "Needs Improvement"
 
-    # ======================================================
-    # EVIDENCE QUALITY
-    # ======================================================
-
     if evidence_score >= 75:
         evidence = "Strong"
 
@@ -429,10 +330,6 @@ def evaluate_interview_answer(
 
     else:
         evidence = "Weak"
-
-    # ======================================================
-    # FEEDBACK
-    # ======================================================
 
     if final_score >= 80:
 
@@ -466,10 +363,6 @@ def evaluate_interview_answer(
             "technical understanding. Review the key concepts "
             "and provide a more focused explanation."
         )
-
-    # ======================================================
-    # RETURN RESULT
-    # ======================================================
 
     return {
         "score": final_score,

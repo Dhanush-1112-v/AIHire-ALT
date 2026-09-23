@@ -1,19 +1,20 @@
 import os
 import tempfile
-import whisper
+
+_WHISPER_MODEL = None
 
 
-# Load Whisper model once when the service starts
-model = whisper.load_model("base")
+def get_whisper_model():
+    global _WHISPER_MODEL
+
+    if _WHISPER_MODEL is None:
+        import whisper
+        _WHISPER_MODEL = whisper.load_model("base")
+
+    return _WHISPER_MODEL
 
 
 def transcribe_audio(audio_file):
-    """
-    Save uploaded audio temporarily,
-    transcribe it using Whisper,
-    then delete the temporary file.
-    """
-
     temp_path = None
 
     try:
@@ -35,6 +36,8 @@ def transcribe_audio(audio_file):
                     break
 
                 temp_file.write(chunk)
+
+        model = get_whisper_model()
 
         result = model.transcribe(
             temp_path,
