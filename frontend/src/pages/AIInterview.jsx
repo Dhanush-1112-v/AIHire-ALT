@@ -1,3 +1,4 @@
+﻿import API_BASE_URL from "../api";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AIInterview.css";
@@ -100,7 +101,7 @@ function selectAdaptiveQuestion(
 
   let targetDifficulty = currentDifficulty;
 
-  // Strong answer → increase difficulty
+  // Strong answer â†’ increase difficulty
   if (score >= 80) {
     if (currentDifficulty === "Easy") {
       targetDifficulty = "Medium";
@@ -109,7 +110,7 @@ function selectAdaptiveQuestion(
     }
   }
 
-  // Weak answer → decrease difficulty
+  // Weak answer â†’ decrease difficulty
   else if (score < 50) {
     if (currentDifficulty === "Hard") {
       targetDifficulty = "Medium";
@@ -118,7 +119,7 @@ function selectAdaptiveQuestion(
     }
   }
 
-  // Moderate answer → keep same difficulty
+  // Moderate answer â†’ keep same difficulty
   else {
     targetDifficulty = currentDifficulty;
   }
@@ -353,7 +354,7 @@ function AIInterview() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/api/proctoring/analyze",
+        `${API_BASE_URL}/api/proctoring/analyze`,
         {
           method: "POST",
           headers: {
@@ -471,7 +472,7 @@ function AIInterview() {
       formData.append("audio", audioBlob, "interview-answer.webm");
 
       const response = await fetch(
-        "http://127.0.0.1:8000/api/speech/transcribe",
+        `${API_BASE_URL}/api/speech/transcribe`,
         {
           method: "POST",
           body: formData,
@@ -504,7 +505,7 @@ function AIInterview() {
       formData.append("audio", audioBlob, "interview-answer.webm");
 
       const response = await fetch(
-        "http://127.0.0.1:8000/api/speech/analyze",
+        `${API_BASE_URL}/api/speech/analyze`,
         {
           method: "POST",
           body: formData,
@@ -559,7 +560,7 @@ function AIInterview() {
     try {
 
       const response = await fetch(
-        "http://127.0.0.1:8000/api/interview/evaluate",
+        `${API_BASE_URL}/api/interview/evaluate`,
         {
           method: "POST",
 
@@ -886,7 +887,7 @@ function AIInterview() {
                   </strong>
 
                   <p>
-                    {item.skill} ·{" "}
+                    {item.skill} Â·{" "}
                     {item.difficulty}
                   </p>
 
@@ -917,7 +918,7 @@ function AIInterview() {
             className="continue-coding-button"
             onClick={() => navigate("/coding-assessment")}
           >
-            Continue to Coding Assessment →
+            Continue to Coding Assessment â†’
           </button>
         </div>
 
@@ -937,7 +938,7 @@ function AIInterview() {
       {/* LIVE INTEGRITY WARNING */}
       {integrityWarning && !isPaused && (
         <div className="integrity-warning">
-          <div className="integrity-warning-icon">⚠</div>
+          <div className="integrity-warning-icon">âš </div>
           <div>
             <strong>Assessment Integrity Warning</strong>
             <p>{integrityWarning}</p>
@@ -949,8 +950,8 @@ function AIInterview() {
       {isPaused && (
         <div className="pause-overlay">
           <div className="pause-modal">
-            <div className="pause-icon">⏸</div>
-            <div className="pause-kicker">AIHire-AMCI · Assessment Integrity</div>
+            <div className="pause-icon">â¸</div>
+            <div className="pause-kicker">AIHire-AMCI Â· Assessment Integrity</div>
             <h2>Interview Paused</h2>
             <p className="pause-main-message">
               The interview has been temporarily paused because unusual
@@ -991,7 +992,7 @@ function AIInterview() {
                 className="resume-button"
                 onClick={resumeInterview}
               >
-                ▶ Resume Interview
+                â–¶ Resume Interview
               </button>
 
               <button
@@ -1200,7 +1201,7 @@ function AIInterview() {
                 onClick={startRecording}
                 disabled={isPaused || evaluating || transcribing || evaluation}
               >
-                🎤 Start Recording
+                ðŸŽ¤ Start Recording
               </button>
             ) : (
               <button
@@ -1208,21 +1209,21 @@ function AIInterview() {
                 className="stop-recording-button"
                 onClick={stopRecording}
               >
-                ⏹ Stop Recording
+                â¹ Stop Recording
               </button>
             )}
           </div>
 
           {isRecording && (
             <div className="recording-status">
-              🔴 Recording your answer... Click <strong>Stop Recording</strong>{" "}
+              ðŸ”´ Recording your answer... Click <strong>Stop Recording</strong>{" "}
               when you finish.
             </div>
           )}
 
           {transcribing && (
             <div className="transcribing-status">
-              🤖 Whisper is converting your speech to text...
+              ðŸ¤– Whisper is converting your speech to text...
             </div>
           )}
 
@@ -1507,10 +1508,10 @@ function AIInterview() {
               <p>
 
                 {evaluation.score >= 80
-                  ? "Strong performance detected → the system will increase the difficulty."
+                  ? "Strong performance detected â†’ the system will increase the difficulty."
                   : evaluation.score < 50
-                  ? "Weak performance detected → the system will reduce the difficulty or reinforce the skill."
-                  : "Moderate performance detected → the system will maintain a similar difficulty level."}
+                  ? "Weak performance detected â†’ the system will reduce the difficulty or reinforce the skill."
+                  : "Moderate performance detected â†’ the system will maintain a similar difficulty level."}
 
               </p>
 

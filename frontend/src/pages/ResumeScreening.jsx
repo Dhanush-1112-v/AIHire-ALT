@@ -1,3 +1,4 @@
+﻿import API_BASE_URL from "../api";
 import { useState } from "react";
 import {
   Upload,
@@ -46,7 +47,7 @@ function ResumeScreening() {
       formData.append("job_role", jobRole);
 
       const response = await fetch(
-        "http://127.0.0.1:8000/api/resume/analyze",
+        `${API_BASE_URL}/api/resume/analyze`,
         {
           method: "POST",
           body: formData,

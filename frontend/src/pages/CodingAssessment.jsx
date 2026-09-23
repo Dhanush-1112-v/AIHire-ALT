@@ -1,10 +1,11 @@
+﻿import API_BASE_URL from "../api";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CodingAssessment.css";
 
 const languages = [
-  { id: "python", name: "Python 3", icon: "🐍" },
-  { id: "java", name: "Java", icon: "☕" },
+  { id: "python", name: "Python 3", icon: "ðŸ" },
+  { id: "java", name: "Java", icon: "â˜•" },
   { id: "c", name: "C", icon: "C" },
   { id: "cpp", name: "C++", icon: "C++" },
   { id: "javascript", name: "JavaScript", icon: "JS" },
@@ -670,7 +671,7 @@ function CodingAssessment() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/api/coding/submit",
+        `${API_BASE_URL}/api/coding/submit`,
         {
           method: "POST",
           headers: {
@@ -741,7 +742,7 @@ function CodingAssessment() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/api/coding/submit",
+        `${API_BASE_URL}/api/coding/submit`,
         {
           method: "POST",
           headers: {
@@ -920,7 +921,7 @@ function CodingAssessment() {
           </div>
 
           <div className="security-icon">
-            ⛶
+            â›¶
           </div>
 
           <h1>AI Coding Assessment</h1>
@@ -952,21 +953,21 @@ function CodingAssessment() {
             <h3>Assessment Rules</h3>
 
             <div>
-              <span>✓</span>
+              <span>âœ“</span>
               <p>
                 Keep the assessment in full-screen mode.
               </p>
             </div>
 
             <div>
-              <span>✓</span>
+              <span>âœ“</span>
               <p>
                 Switching tabs pauses the assessment.
               </p>
             </div>
 
             <div>
-              <span>✓</span>
+              <span>âœ“</span>
               <p>
                 First violation causes a 5-minute
                 lockout.
@@ -974,7 +975,7 @@ function CodingAssessment() {
             </div>
 
             <div>
-              <span>✓</span>
+              <span>âœ“</span>
               <p>
                 Second violation causes a 10-minute
                 lockout.
@@ -982,7 +983,7 @@ function CodingAssessment() {
             </div>
 
             <div>
-              <span>✓</span>
+              <span>âœ“</span>
               <p>
                 Third violation disables the assessment.
               </p>
@@ -993,7 +994,7 @@ function CodingAssessment() {
             className="fullscreen-start-button"
             onClick={enterFullscreen}
           >
-            Enter Full Screen & Start Assessment →
+            Enter Full Screen & Start Assessment â†’
           </button>
         </div>
       </div>
@@ -1005,7 +1006,7 @@ function CodingAssessment() {
       <div className="coding-page">
         <div className="coding-complete">
           <div className="complete-icon">
-            ✓
+            âœ“
           </div>
 
           <h1>
@@ -1148,7 +1149,7 @@ function CodingAssessment() {
               navigate("/dashboard")
             }
           >
-            Continue to Dashboard →
+            Continue to Dashboard â†’
           </button>
         </div>
       </div>
@@ -1170,7 +1171,7 @@ function CodingAssessment() {
 
         <div className="header-center">
           <div className="proctored-badge">
-            <span>●</span>
+            <span>â—</span>
             Proctored
           </div>
         </div>
@@ -1219,7 +1220,7 @@ function CodingAssessment() {
                 {currentQuestion.skill}
               </span>
 
-              <span>•</span>
+              <span>â€¢</span>
 
               <span>
                 Adaptive Assessment
@@ -1295,7 +1296,7 @@ function CodingAssessment() {
                 </p>
 
                 <div className="adaptive-note">
-                  <span>⚡</span>
+                  <span>âš¡</span>
 
                   <div>
                     <strong>
@@ -1383,7 +1384,7 @@ function CodingAssessment() {
 
               <div className="editor-tools">
                 <span className="editor-live">
-                  ● LIVE
+                  â— LIVE
                 </span>
 
                 <button
@@ -1392,7 +1393,7 @@ function CodingAssessment() {
                     enterFullscreen
                   }
                 >
-                  ⛶ Full Screen
+                  â›¶ Full Screen
                 </button>
               </div>
             </div>
@@ -1445,7 +1446,7 @@ function CodingAssessment() {
               >
                 {isRunning
                   ? "Running..."
-                  : "▶ Run Code"}
+                  : "â–¶ Run Code"}
               </button>
 
               <button
@@ -1460,7 +1461,7 @@ function CodingAssessment() {
               >
                 {isSubmitting
                   ? "Evaluating..."
-                  : "Submit Code →"}
+                  : "Submit Code â†’"}
               </button>
             </div>
           </section>
@@ -1473,7 +1474,7 @@ function CodingAssessment() {
             <div className="result-icon">
               {result.type === "error"
                 ? "!"
-                : "✓"}
+                : "âœ“"}
             </div>
 
             <div className="result-main">
@@ -1601,7 +1602,7 @@ function CodingAssessment() {
           <div className="pause-overlay">
             <div className="pause-modal">
               <div className="pause-modal-icon">
-                ⏸
+                â¸
               </div>
 
               <h2>
@@ -1651,7 +1652,7 @@ function CodingAssessment() {
                   ? `Wait ${formatLockTime(
                       lockSeconds
                     )}`
-                  : "Return to Full Screen & Resume →"}
+                  : "Return to Full Screen & Resume â†’"}
               </button>
             </div>
           </div>

@@ -1,3 +1,4 @@
+﻿import API_BASE_URL from "../api";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Results.css";
@@ -18,7 +19,7 @@ function Results() {
         setError("");
 
         const response = await fetch(
-          `http://127.0.0.1:8000/api/results/${candidateId}`
+          `${API_BASE_URL}/api/results/${candidateId}`
         );
 
         if (!response.ok) {
@@ -132,7 +133,7 @@ function Results() {
 
           <div className="score-card">
             <div className="score-card-top">
-              <span className="score-icon">📄</span>
+              <span className="score-icon">ðŸ“„</span>
               <span>Resume Match</span>
             </div>
 
@@ -147,12 +148,12 @@ function Results() {
               />
             </div>
 
-            <p>Resume ↔ Job Description</p>
+            <p>Resume â†” Job Description</p>
           </div>
 
           <div className="score-card">
             <div className="score-card-top">
-              <span className="score-icon">🤖</span>
+              <span className="score-icon">ðŸ¤–</span>
               <span>Technical Interview</span>
             </div>
 
@@ -172,7 +173,7 @@ function Results() {
 
           <div className="score-card">
             <div className="score-card-top">
-              <span className="score-icon">🎤</span>
+              <span className="score-icon">ðŸŽ¤</span>
               <span>Communication</span>
             </div>
 
@@ -192,7 +193,7 @@ function Results() {
 
           <div className="score-card">
             <div className="score-card-top">
-              <span className="score-icon">💻</span>
+              <span className="score-icon">ðŸ’»</span>
               <span>Coding Assessment</span>
             </div>
 
@@ -221,12 +222,12 @@ function Results() {
             </div>
 
             <div className="skill-list">
-              <span className="skill matched">✓ Python</span>
-              <span className="skill matched">✓ Java</span>
-              <span className="skill matched">✓ SQL</span>
-              <span className="skill matched">✓ React</span>
+              <span className="skill matched">âœ“ Python</span>
+              <span className="skill matched">âœ“ Java</span>
+              <span className="skill matched">âœ“ SQL</span>
+              <span className="skill matched">âœ“ React</span>
               <span className="skill matched">
-                ✓ Machine Learning
+                âœ“ Machine Learning
               </span>
             </div>
           </div>
@@ -248,7 +249,7 @@ function Results() {
 
         <section className="integrity-card">
           <div>
-            <span className="integrity-icon">🛡️</span>
+            <span className="integrity-icon">ðŸ›¡ï¸</span>
 
             <div>
               <h3>AI-Assistance & Proctoring</h3>
@@ -264,7 +265,7 @@ function Results() {
 
         <section className="summary-card">
           <div className="panel-heading">
-            <span>🧠</span>
+            <span>ðŸ§ </span>
 
             <div>
               <h3>AI Assessment Summary</h3>
@@ -285,7 +286,7 @@ function Results() {
 
         <section className="recommendation-card">
           <div className="panel-heading">
-            <span>💡</span>
+            <span>ðŸ’¡</span>
 
             <div>
               <h3>Personalized Recommendations</h3>
@@ -333,7 +334,7 @@ function Results() {
             className="primary-btn"
             onClick={() => navigate("/candidate-report")}
           >
-            View Candidate Report →
+            View Candidate Report â†’
           </button>
         </div>
 
