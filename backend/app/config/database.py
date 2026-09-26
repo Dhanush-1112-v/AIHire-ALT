@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from dotenv import dotenv_values
@@ -11,11 +12,19 @@ ENV_FILE = BASE_DIR / ".env"
 
 env = dotenv_values(ENV_FILE)
 
-DB_HOST = env.get("DB_HOST") or "localhost"
-DB_PORT = env.get("DB_PORT") or "5432"
-DB_NAME = env.get("DB_NAME") or "aihire"
-DB_USER = env.get("DB_USER") or "postgres"
-DB_PASSWORD = env.get("DB_PASSWORD") or "Dhanush@1112"  # Replace with your actual PostgreSQL password
+
+def get_setting(name, default=None):
+    return os.getenv(name) or env.get(name) or default
+
+
+DB_HOST = get_setting("DB_HOST", "localhost")
+DB_PORT = get_setting("DB_PORT", "5432")
+DB_NAME = get_setting("DB_NAME", "aihire")
+DB_USER = get_setting("DB_USER", "postgres")
+DB_PASSWORD = get_setting("DB_PASSWORD")
+
+if not DB_PASSWORD:
+    raise RuntimeError("DB_PASSWORD is not configured")
 
 
 DATABASE_URL = URL.create(
